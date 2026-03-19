@@ -37,16 +37,22 @@ INSERT INTO visits (patient_id) VALUES
 -- ------------------------------
 INSERT INTO notes (visit_id, content) VALUES
 -- Priya Visit 1
+
 (1, 'Patient has high fever and mild cough for 3 days. Prescribed Paracetamol 500mg and Cough Syrup. Recommended Blood Test and Urine Test. Advised rest and hydration.'),
 -- Priya Visit 2
+
 (2, 'Follow-up visit. Patient feels better. No new drugs prescribed. Recommended Routine Blood Test.'),
 -- Vikram Visit 3
+
 (3, 'Routine check-up. Blood pressure slightly elevated. Recommended Blood Pressure Check and Cholesterol Test. No drugs prescribed.'),
 -- Sharan Visit 4
+
 (4, 'Patient reports persistent cough and sore throat. Prescribed Cough Syrup and Lozenges. Recommended Throat Swab Test.'),
 -- Sharan Visit 5
+
 (5, 'Routine wellness check. All vitals normal. No drugs prescribed.'),
 -- Harini Visit 6
+
 (6, 'Patient complains of fever and dizziness. Prescribed Paracetamol 500mg. Recommended Blood Test and Blood Pressure Check.');
 
 -- ------------------------------
