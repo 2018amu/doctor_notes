@@ -1,23 +1,88 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-
-# testing
-/coverage
-
-# production
-/build
-
-# misc
+# =========================
+# OS files
+# =========================
 .DS_Store
+Thumbs.db
+
+# =========================
+# Logs
+# =========================
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# Environment files
+# =========================
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# =========================
+# Node / React (Frontend)
+# =========================
+node_modules/
+build/
+dist/
+coverage/
+
+# Vite / React cache
+.vite/
+.cache/
+
+# =========================
+# Go (Backend)
+# =========================
+bin/
+*.exe
+*.out
+*.test
+*.dll
+
+# Go modules cache (optional)
+vendor/
+
+# =========================
+# Database / SQL dumps
+# =========================
+*.sql
+*.dump
+*.backup
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# =========================
+# Docker
+# =========================
+docker-compose.override.yml
+
+# =========================
+# Coverage / reports
+# =========================
+coverage.out
+
+# =========================
+# Temporary files
+# =========================
+tmp/
+temp/
+*.tmp
+
+# =========================
+# Misc
+# =========================
+.DS_Store?
+.

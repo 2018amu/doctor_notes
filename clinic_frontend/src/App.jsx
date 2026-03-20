@@ -45,7 +45,7 @@ function App() {
 
   // Create visit
   const createVisit = async () => {
-    if (!selectedPatient) return setStatus("⚠️ Select patient first");
+    if (!selectedPatient) return setStatus(" Select patient first");
 
     try {
       const res = await axios.post(

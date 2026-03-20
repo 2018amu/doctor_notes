@@ -1,0 +1,121 @@
+-- ------------------------------
+-- 1. Patients
+-- ------------------------------
+INSERT INTO patients (name) VALUES
+('Priya'),
+('Vikram'),
+('Sharan'),
+('Harini');
+
+-- ------------------------------
+-- 2. Visits
+-- ------------------------------
+INSERT INTO visits (patient_id) VALUES
+(1), (1),        -- Priya: 2 visits
+(2),             -- Vikram: 1 visit
+(3), (3),        -- Sharan: 2 visits
+(4);             -- Harini: 1 visit
+
+-- ------------------------------
+-- 3. Notes
+-- ------------------------------
+INSERT INTO notes (visit_id, content) VALUES
+-- Priya Visit 1
+(1, 'Patient has high fever and mild cough for 3 days. Prescribed Paracetamol 500mg and Cough Syrup. Recommended Blood Test and Urine Test. Advised rest and hydration.'),
+-- Priya Visit 2
+(2, 'Follow-up visit. Patient feels better. No new drugs prescribed. Recommended Routine Blood Test.'),
+-- Vikram Visit 3
+(3, 'Routine check-up. Blood pressure slightly elevated. Recommended Blood Pressure Check and Cholesterol Test. No drugs prescribed.'),
+-- Sharan Visit 4
+(4, 'Patient reports persistent cough and sore throat. Prescribed Cough Syrup and Lozenges. Recommended Throat Swab Test.'),
+-- Sharan Visit 5
+(5, 'Routine wellness check. All vitals normal. No drugs prescribed.'),
+-- Harini Visit 6
+(6, 'Patient complains of fever and dizziness. Prescribed Paracetamol 500mg. Recommended Blood Test and Blood Pressure Check.');
+
+-- ------------------------------
+-- 4. Drugs
+-- ------------------------------
+INSERT INTO drugs (visit_id, name, dosage, price) VALUES
+-- Priya Visit 1
+(1, 'Paracetamol 500mg', '2 per day', 50),
+(1, 'Cough Syrup', '10ml twice daily', 40),
+-- Priya Visit 2
+(2, 'None', '', 0),
+-- Vikram Visit 3
+(3, 'None', '', 0),
+-- Sharan Visit 4
+(4, 'Cough Syrup', '10ml twice daily', 40),
+(4, 'Lozenges', '2 per day', 20),
+-- Sharan Visit 5
+(5, 'None', '', 0),
+-- Harini Visit 6
+(6, 'Paracetamol 500mg', '2 per day', 50);
+
+-- ------------------------------
+-- 5. Lab Tests
+-- ------------------------------
+INSERT INTO lab_tests (visit_id, test_name, price) VALUES
+-- Priya Visit 1
+(1, 'Blood Test', 100),
+(1, 'Urine Test', 50),
+-- Priya Visit 2
+(2, 'Routine Blood Test', 100),
+-- Vikram Visit 3
+(3, 'Blood Pressure Check', 30),
+(3, 'Cholesterol Test', 70),
+-- Sharan Visit 4
+(4, 'Throat Swab Test', 60),
+-- Sharan Visit 5
+(5, 'Routine Blood Test', 100),
+-- Harini Visit 6
+(6, 'Blood Test', 100),
+(6, 'Blood Pressure Check', 30);
+
+-- ------------------------------
+-- 6. Billing
+-- ------------------------------
+INSERT INTO billing (visit_id, total_amount) VALUES
+(1, 50+40+100+50),  -- Priya Visit 1 = 240
+(2, 0+100),         -- Priya Visit 2 = 100
+(3, 0+30+70),       -- Vikram Visit 3 = 100
+(4, 40+20+60),      -- Sharan Visit 4 = 120
+(5, 0+100),         -- Sharan Visit 5 = 100
+(6, 50+100+30);     -- Harini Visit 6 = 180
+
+voice notes///  when button click on addVoice Doctor can say Doctor Notes.it can automatically write on text Area.
+// back pain
+Patient has lower back pain for a few days, worse with movement and sitting. 
+No trauma or neurological symptoms. Likely muscular strain. Prescribed Ibuprofen 400mg and muscle relaxant. 
+Advised rest, posture correction, and warm compress. Recommended X-ray if pain persists.”
+
+//Headache
+
+“Patient presents with headache for a few days. No history of trauma, no vision changes or neurological symptoms. Likely tension headache. 
+Prescribed Paracetamol 500mg as needed for pain. Advised rest, hydration, and reduced screen time. Follow up if symptoms persist or worsen.”
+
+// Fever
+
+“Patient has fever for two days with body aches and mild fatigue. No severe symptoms. Likely viral fever. Prescribed Paracetamol 500mg. Advised rest, hydration, and monitoring. Recommended blood test if fever persists.”
+
+// Cough / Cold
+
+“Patient presents with cough and cold symptoms for a few days. No breathing difficulty. Likely upper respiratory infection. Prescribed cough syrup and antihistamines. Advised rest, warm fluids, and steam inhalation. Follow up if symptoms worsen.”
+
+ // Sore Throat
+
+“Patient complains of sore throat with mild pain while swallowing. No fever or complications. Likely throat infection. Prescribed lozenges and pain relief medication. Recommended warm salt water gargling and hydration.”
+
+ // Headache
+
+“Patient presents with headache for a few days. No trauma or neurological symptoms. Likely tension headache. Prescribed Paracetamol 500mg. Advised rest, hydration, and reduced screen time. Follow up if persistent.”
+
+// Back Pain
+
+“Patient has lower back pain for a few days, worse with movement and sitting. No trauma or neurological symptoms. Likely muscular strain. Prescribed Ibuprofen and muscle relaxant. Advised rest, posture correction, and warm compress.”
+
+ // General Checkup
+
+“Patient came for routine checkup. No major complaints. Vital signs stable. Advised routine blood tests and maintaining a healthy lifestyle. Follow up as needed.”
+
+
