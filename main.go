@@ -96,6 +96,7 @@ func parseNoteText(text string) (drugs []map[string]string, tests []map[string]s
 		addTest("CBC", "150")
 		addTest("CRP", "200")
 	}
+	//here can add more
 
 	// ---------------- TESTS ----------------
 
@@ -184,7 +185,7 @@ func PatientsHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(p)
 }
 
-// GET /patients/{id}/visits or POST /patients/{id}/visits
+// GET or POST /patients/{id}/visits
 func PatientVisitsHandler(w http.ResponseWriter, r *http.Request) {
 	enableCORS(w)
 	if r.Method == "OPTIONS" {
@@ -316,9 +317,8 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// ✅ ADD THESE (IMPORTANT)
-	db.SetMaxOpenConns(25)        // max simultaneous connections
-	db.SetMaxIdleConns(10)        // idle connections
+	db.SetMaxOpenConns(25)                 // max simultaneous connections
+	db.SetMaxIdleConns(10)                 // idle connections
 	db.SetConnMaxLifetime(5 * time.Minute) // recycle connections
 
 	// Ping DB
