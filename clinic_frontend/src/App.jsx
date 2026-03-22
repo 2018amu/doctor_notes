@@ -107,10 +107,12 @@ function App() {
     const doc = new jsPDF();
   
     let y = 15;
+    const patientName =
+    patients.find((p) => String(p.id) === String(selectedPatient))?.name || "Patient";
   
     // Header
     doc.setFontSize(18);
-    doc.text("Clinic Visit Report", 14, y);
+    doc.text( `Clinic Visit Report for ${patientName} (Visit #${selectedVisit})`, 14, y);
     y += 10;
   
     doc.setFontSize(10);
