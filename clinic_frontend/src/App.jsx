@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import "./App.css";
 import VoiceInput from "./VoiceInput";
 
@@ -106,81 +107,121 @@ function App() {
   const downloadPDF = () => {
     const doc = new jsPDF();
   
-    let y = 15;
     const patientName =
-    patients.find((p) => String(p.id) === String(selectedPatient))?.name || "Patient";
+      patients.find((p) => String(p.id) === String(selectedPatient))?.name || "Patient";
   
-    // Header
-    doc.setFontSize(18);
-    doc.text( `Clinic Visit Report for ${patientName} (Visit #${selectedVisit})`, 14, y);
-    y += 10;
+    const doctorName = "Dr. N.Jeevan"; //change dynamically if needed
   
-    doc.setFontSize(10);
-    doc.text(`Generated on: ${new Date().toLocaleString()}`, 14, y);
-    y += 10;
+    // ---------------- LOGO ----------------
+    // Use base64 image OR public path
+    const logo = "./logo.png"; // place logo in public folder
   
-    // Divider
-    doc.line(14, y, 200, y);
-    y += 10;
+    try {
+      doc.addImage(logo, "PNG", 14, 10, 25, 25);
+    } catch {
+      console.log("Logo not found, skipping...");
+    }
   
-    // Summary
-    doc.setFontSize(12);
-    doc.text("Summary:", 14, y);
-    y += 6;
-    doc.setFontSize(10);
-    doc.text(parsedData.summary || "-", 14, y);
-    y += 10;
-  
-    // Drugs
-    doc.setFontSize(12);
-    doc.text("Drugs:", 14, y);
-    y += 6;
-  
-    parsedData.drugs.forEach((d, i) => {
-      doc.setFontSize(10);
-      doc.text(`${i + 1}. ${d.name} (${d.dosage}) - $${d.price}`, 16, y);
-      y += 6;
-    });
-  
-    y += 4;
-  
-    // Tests
-    doc.setFontSize(12);
-    doc.text("Tests:", 14, y);
-    y += 6;
-  
-    parsedData.tests.forEach((t, i) => {
-      doc.setFontSize(10);
-      doc.text(`${i + 1}. ${t.test_name} - $${t.price}`, 16, y);
-      y += 6;
-    });
-  
-    y += 4;
-  
-    // Observations
-    doc.setFontSize(12);
-    doc.text("Observations:", 14, y);
-    y += 6;
-  
-    parsedData.observations.forEach((o, i) => {
-      doc.setFontSize(10);
-      doc.text(`- ${o}`, 16, y);
-      y += 6;
-    });
-  
-    y += 10;
-  
-    // Billing Box
-    doc.setFontSize(12);
-    doc.text("Billing Summary", 14, y);
-    y += 6;
-  
-    doc.rect(14, y, 180, 20); // box
+    // ---------------- HEADER ----------------
+    doc.setFontSize(16);
+    doc.text("CITY CLINIC", 45, 18);
   
     doc.setFontSize(11);
-    doc.text(`Total Amount: $${parsedData.billing}`, 20, y + 12);
+    doc.text("Patient Visit Report", 45, 24);
   
-    doc.save("visit_report.pdf");
+    doc.setFontSize(9);
+    doc.text(`Date: ${new Date().toLocaleString()}`, 150, 18);
+  
+    doc.line(14, 35, 200, 35);
+  
+    // ---------------- PATIENT INFO ----------------
+    let y = 42;
+  
+    doc.setFontSize(11);
+    doc.text(`Patient: ${patientName}`, 14, y);
+    doc.text(`Visit ID: ${selectedVisit}`, 120, y);
+  
+    y += 8;
+  
+    // ---------------- SUMMARY ----------------
+    doc.setFontSize(12);
+    doc.text("Clinical Summary", 14, y);
+    y += 6;
+  
+    doc.setFontSize(10);
+  
+    const splitSummary = doc.splitTextToSize(
+      parsedData.summary || "-",
+      180
+    );
+    doc.text(splitSummary, 14, y);
+  
+    y += splitSummary.length * 6 + 4;
+  
+    // ---------------- DRUGS TABLE ----------------
+    autoTable(doc, {
+      startY: y,
+      head: [["Drug", "Dosage", "Price ($)"]],
+      body:
+        parsedData.drugs.length > 0
+          ? parsedData.drugs.map((d) => [d.name, d.dosage, d.price])
+          : [["No drugs prescribed", "", ""]],
+    });
+  
+    y = doc.lastAutoTable.finalY + 6;
+  
+    // ---------------- TESTS TABLE ----------------
+    autoTable(doc, {
+      startY: y,
+      head: [["Test", "Price ($)"]],
+      body:
+        parsedData.tests.length > 0
+          ? parsedData.tests.map((t) => [t.test_name, t.price])
+          : [["No tests ordered", ""]],
+    });
+  
+    y = doc.lastAutoTable.finalY + 6;
+  
+    // ---------------- OBSERVATIONS ----------------
+    doc.setFontSize(12);
+    doc.text("Observations", 14, y);
+    y += 6;
+  
+    doc.setFontSize(10);
+  
+    const observationsText =
+      parsedData.observations.length > 0
+        ? parsedData.observations.map((o) => `• ${o}`).join("\n")
+        : "No observations";
+  
+    const splitObs = doc.splitTextToSize(observationsText, 180);
+    doc.text(splitObs, 14, y);
+  
+    y += splitObs.length * 6 + 10;
+  
+    // ---------------- BILLING ----------------
+    autoTable(doc, {
+      startY: y,
+      head: [["Billing Summary", "Amount ($)"]],
+      body: [["Total", parsedData.billing]],
+      theme: "grid",
+    });
+  
+    y = doc.lastAutoTable.finalY + 15;
+  
+    // ---------------- SIGNATURE ----------------
+    doc.setFontSize(10);
+    doc.text(`Doctor: ${doctorName}`, 14, y);
+  
+    y += 10;
+    doc.line(14, y, 80, y);
+    doc.text("Signature", 14, y + 5);
+  
+    // ---------------- MULTI-PAGE SUPPORT ----------------
+    // autoTable already handles page breaks automatically
+  
+    // ---------------- SAVE ----------------
+    doc.save(`Visit_${selectedVisit}_Report.pdf`);
   };
 
   const uniqueNotes = [...new Set(parsedData.notes || [])];
