@@ -106,6 +106,9 @@ func parseNoteText(text string) (drugs []map[string]string, tests []map[string]s
 
 		addTest("Routine Blood Test", "100")
 	}
+	if strings.Contains(lower," blood pressure"){
+		addTest("Blood Pressure Check + Cholesterol Test","200")
+	}
 
 	if strings.Contains(lower, "x-ray") || strings.Contains(lower, "xray") {
 		addTest("X-Ray", "200")
