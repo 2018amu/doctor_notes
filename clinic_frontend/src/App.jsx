@@ -228,10 +228,14 @@ function App() {
 
   return (
     <div className="app-container">
-      <h1 className="title">🏥 Clinic Management System</h1>
-
-      {/* Controls */}
-      <div className="top-panel">
+    <header className="header">
+      <h1 className="title">Clinic Management System</h1>
+    </header>
+  
+    {/* Controls */}
+    <div className="top-panel card">
+      <div className="form-group">
+        <label>Patient</label>
         <select
           value={selectedPatient}
           onChange={(e) => setSelectedPatient(e.target.value)}
@@ -243,9 +247,14 @@ function App() {
             </option>
           ))}
         </select>
-
-        <button onClick={createVisit}>+ New Visit</button>
-
+      </div>
+  
+      <button className="btn primary" onClick={createVisit}>
+        + New Visit
+      </button>
+  
+      <div className="form-group">
+        <label>Visit</label>
         <select
           value={selectedVisit}
           onChange={(e) => setSelectedVisit(e.target.value)}
@@ -258,96 +267,96 @@ function App() {
           ))}
         </select>
       </div>
-
+    </div>
+  
+    {/* Voice Input */}
+    <div className="card">
       <VoiceInput onResult={(text) => setNoteText(text)} />
-
-      {/* Note Input */}
-      <div className="note-box">
-        <textarea
-          value={noteText}
-          onChange={(e) => setNoteText(e.target.value)}
-          placeholder="Enter symptoms, diagnosis, treatment..."
-        />
-        
-        <button onClick={saveNote}>Save Note</button>
+    </div>
+  
+    {/* Note Input */}
+    <div className="note-box card">
+      <label>Clinical Notes</label>
+      <textarea
+        value={noteText}
+        onChange={(e) => setNoteText(e.target.value)}
+        placeholder="Enter symptoms, diagnosis, treatment plan..."
+      />
+      <button className="btn primary" onClick={saveNote}>
+        Save Note
+      </button>
+    </div>
+  
+    {parsedData.notes.length > 0 && (
+      <button className="btn secondary download-btn" onClick={downloadPDF}>
+        Download Report
+      </button>
+    )}
+  
+    {status && <p className="status">{status}</p>}
+  
+    {/* Dashboard */}
+    <div className="dashboard">
+      <div className="card">
+        <h2>Summary</h2>
+        <p>{parsedData.summary || "No summary available"}</p>
       </div>
-
-      {parsedData.notes.length > 0 && (
-        <button className="download-btn" onClick={downloadPDF}>
-          📄 Download Report
-        </button>
-      )}
-
-      {status && <p className="status">{status}</p>}
-
-      {/* Dashboard */}
-      <div className="dashboard">
-        {/* Summary */}
-        <div className="card">
-          <h2>📋 Summary</h2>
-          <p>{parsedData.summary || "No summary available"}</p>
-        </div>
-
-        {/* Drugs */}
-        <div className="card">
-          <h2>💊 Drugs</h2>
-          {Array.isArray(parsedData.drugs) && parsedData.drugs.length > 0 ? (
-            parsedData.drugs.map((d, i) => (
-              <p key={i}>
-                {d.name} ({d.dosage}) - ${d.price}
-              </p>
-            ))
-          ) : (
-            <p>No drugs</p>
-          )}
-        </div>
-
-        {/* Tests */}
-        <div className="card">
-          <h2>🧪 Tests</h2>
-          {Array.isArray(parsedData.tests) && parsedData.tests.length > 0 ? (
-            parsedData.tests.map((t, i) => (
-              <p key={i}>
-                {t.test_name} - ${t.price}
-              </p>
-            ))
-          ) : (
-            <p>No tests</p>
-          )}
-        </div>
-
-        {/* Observations */}
-        <div className="card">
-          <h2>🩺 Observations</h2>
-          {Array.isArray(parsedData.observations) &&
-          parsedData.observations.length > 0 ? (
-            parsedData.observations.map((o, i) => <p key={i}>• {o}</p>)
-          ) : (
-            <p>No observations available</p>
-          )}
-        </div>
-
-        {/* Notes Timeline */}
-        <div className="card wide">
-          <h2>📝 Notes Timeline</h2>
-          {uniqueNotes.length > 0 ? (
-            uniqueNotes.map((n, i) => (
-              <div key={i} className="timeline-item">
-                {n}
-              </div>
-            ))
-          ) : (
-            <p>No notes</p>
-          )}
-        </div>
-
-        {/* Billing */}
-        <div className="card billing">
-          <h2>💰 Total Bill</h2>
-          <p>${parsedData.billing || 0}</p>
-        </div>
+  
+      <div className="card">
+        <h2>Drugs</h2>
+        {Array.isArray(parsedData.drugs) && parsedData.drugs.length > 0 ? (
+          parsedData.drugs.map((d, i) => (
+            <p key={i}>
+              {d.name} ({d.dosage}) - ${d.price}
+            </p>
+          ))
+        ) : (
+          <p>No drugs prescribed</p>
+        )}
+      </div>
+  
+      <div className="card">
+        <h2>Tests</h2>
+        {Array.isArray(parsedData.tests) && parsedData.tests.length > 0 ? (
+          parsedData.tests.map((t, i) => (
+            <p key={i}>
+              {t.test_name} - ${t.price}
+            </p>
+          ))
+        ) : (
+          <p>No tests ordered</p>
+        )}
+      </div>
+  
+      <div className="card">
+        <h2>Observations</h2>
+        {Array.isArray(parsedData.observations) &&
+        parsedData.observations.length > 0 ? (
+          parsedData.observations.map((o, i) => <p key={i}>• {o}</p>)
+        ) : (
+          <p>No observations recorded</p>
+        )}
+      </div>
+  
+      <div className="card wide">
+        <h2>Notes Timeline</h2>
+        {uniqueNotes.length > 0 ? (
+          uniqueNotes.map((n, i) => (
+            <div key={i} className="timeline-item">
+              {n}
+            </div>
+          ))
+        ) : (
+          <p>No notes available</p>
+        )}
+      </div>
+  
+      <div className="card billing">
+        <h2>Total Bill</h2>
+        <p>${parsedData.billing || 0}</p>
       </div>
     </div>
+  </div>
   );
 }
 
